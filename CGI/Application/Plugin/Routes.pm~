@@ -34,7 +34,7 @@ sub routes_table {
 sub routes_parse {
 	#all this routine, except a few own modifications was borrowed from the wonderful
 	# Michael Peter's CGI::Application::Dispatch module that can be found here:
-	# http://search.cpan.org/~wonko/CGI-Application-Dispatch/
+	#http://search.cpan.org/~wonko/CGI-Application-Dispatch/
 	my ($self) = @_;
 	my $path = $self->query->path_info;
 	# get the module name from the table
