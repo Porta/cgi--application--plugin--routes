@@ -1,0 +1,7 @@
+With this plugin i'd like to mimic how Rails routes work but in CGI::Application-
+Even when the approach is incomplete (basically, it only adds the parsed params to the CGI object to make them available across the whole CGI::Application based application), it's what I considered a good start.
+
+This work was inspired by Michael Peter's CGI::Application::Dispatch module that can be found here:
+http://search.cpan.org/~wonko/CGI-Application-Dispatch/
+
+Enjoy and feel free to email comments/suggestions to julian@porta.sh
