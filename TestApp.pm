@@ -19,10 +19,10 @@ sub setup {
 	my $self = shift;
 
 	$self->routes_table([
-		'' => 'home' ,
-		'/showform/:id'  => 'show_form',
-		'/coco/:id'  => 'do_search',
-		'/sorongo/:name/:id/:email'  => 'view_details',
+# 		'' => 'home' ,
+# 		'/showform/:id'  => 'show_form',
+# 		'/coco/:id'  => 'do_search',
+# 		'/sorongo/:name/:id/:email'  => 'view_details',
 	]);
 	$self->start_mode('show_form');
 
@@ -51,7 +51,7 @@ sub show_form {
 	my $self = shift;
 
 	my $q = $self->query();
-	warn "a ver ", $q->param('id');
+	warn $self->routes_dbg;
 
 	return $self->dump_html();
 }
@@ -60,8 +60,6 @@ sub show_form {
 
 sub do_search {
 	my $self = shift;
-
-	warn "llegué ";
 
 	return $self->dump_html();
 }

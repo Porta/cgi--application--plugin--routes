@@ -1,7 +1,52 @@
-With this plugin i'd like to mimic how Rails routes work but in CGI::Application-
-Even when the approach is incomplete (basically, it only adds the parsed params to the CGI object to make them available across the whole CGI::Application based application), it's what I considered a good start.
+CGI-Application-Plugin-Routes
 
-This work was inspired by Michael Peter's CGI::Application::Dispatch module that can be found here:
-http://search.cpan.org/~wonko/CGI-Application-Dispatch/
+The README is used to introduce the module and provide instructions on
+how to install the module, any machine dependencies it may have (for
+example C compilers and installed libraries) and any other information
+that should be provided before the module is installed.
 
-Enjoy and feel free to email comments/suggestions to julian@porta.sh
+A README file is required for CPAN modules since CPAN extracts the README
+file from a module distribution so that people browsing the archive
+can use it to get an idea of the module's uses. It is usually a good idea
+to provide version information here so that people can decide whether
+fixes for the module are worth downloading.
+
+
+INSTALLATION
+
+To install this module, run the following commands:
+
+	perl Makefile.PL
+	make
+	make test
+	make install
+
+SUPPORT AND DOCUMENTATION
+
+After installing, you can find documentation for this module with the
+perldoc command.
+
+    perldoc CGI::Application::Plugin::Routes
+
+You can also look for information at:
+
+    RT, CPAN's request tracker
+        http://rt.cpan.org/NoAuth/Bugs.html?Dist=CGI-Application-Plugin-Routes
+
+    AnnoCPAN, Annotated CPAN documentation
+        http://annocpan.org/dist/CGI-Application-Plugin-Routes
+
+    CPAN Ratings
+        http://cpanratings.perl.org/d/CGI-Application-Plugin-Routes
+
+    Search CPAN
+        http://search.cpan.org/dist/CGI-Application-Plugin-Routes
+
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2008 Julián Porta
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
