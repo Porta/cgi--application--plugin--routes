@@ -143,6 +143,7 @@ In TestApp.om
 		my $name = $q->param('name');
 		my $id = $q->param('id');
 		my $email = $q->param('email');
+		my $debug = $self->routes_dbg;#dumps all the C::A::P::Routes info
 		return $self->dump_html();
 	}
 	1;
@@ -231,6 +232,9 @@ L<http://search.cpan.org/dist/CGI-Application-Plugin-Routes>
 
 =head1 ACKNOWLEDGEMENTS
 
+Michael Peter's CGI::Application::Dispatch module that can be found here:
+L<http://search.cpan.org/~wonko/CGI-Application-Dispatch>
+I borrowed from him most of the routine that parses the url.
 
 =head1 COPYRIGHT & LICENSE
 

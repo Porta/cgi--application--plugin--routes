@@ -143,6 +143,7 @@ In TestApp.om
 		my $name = $q->param('name');
 		my $id = $q->param('id');
 		my $email = $q->param('email');
+		my $debug = $self->routes_dbg; #dumps all the C::A::P::Routes info
 		return $self->dump_html();
 	}
 	1;
