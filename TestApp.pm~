@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use base qw/CGI::Application/;
 use CGI::Application::Plugin::Routes;
+use Data::Dumper;
 sub setup {
 	my $self = shift;
 

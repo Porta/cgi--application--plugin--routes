@@ -231,9 +231,6 @@ L<http://search.cpan.org/dist/CGI-Application-Plugin-Routes>
 
 =head1 ACKNOWLEDGEMENTS
 
-Michael Peter's CGI::Application::Dispatch module that can be found here:
-L<http://search.cpan.org/~wonko/CGI-Application-Dispatch>
-I borrowed from him most of the routine that parses the url.
 
 =head1 COPYRIGHT & LICENSE
 

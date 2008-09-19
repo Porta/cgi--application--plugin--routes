@@ -111,42 +111,15 @@ Version 0.01
 =head1 SYNOPSIS
 
 CGI::Application::Plugin::Routes tries to bring to perl some of the goodies of Rails routes by allowing the creationg of a routes table that is parsed at the prerun stage again the CGI's path_info data. The result of the process (if there's any match at the end of the process) is added to CGI's query method from CGI::Application and available to all the runmodes via the CGI::Application::query::param method.
-By doing this, the plugin provides a uniform way to access GET and POST parameters when using clean url's with the query->param() method.
+By doing this,
 
 
 Perhaps a little code snippet.
 
-In TestApp.om
+    use CGI::Application::Plugin::Routes;
 
-	package TestApp;
-	use strict;
-	use warnings;
-	use base qw/CGI::Application/;
-	use CGI::Application::Plugin::Routes;
-	sub setup {
-		my $self = shift;
-
-		$self->routes_table([
-			'' => 'home' ,
-			'/view/:name/:id/:email'  => 'view',
-		]);
-		$self->start_mode('show');
-
-		$self->run_modes([qw/
-			view
-		/]);
-		$self->tmpl_path('templates/');
-	}
-	sub view {
-		my $self = shift;
-		my $q = $self->query();
-		my $name = $q->param('name');
-		my $id = $q->param('id');
-		my $email = $q->param('email');
-		return $self->dump_html();
-	}
-	1;
-
+    my $foo = CGI::Application::Plugin::Routes->new();
+    ...
 
 =head1 EXPORT
 
@@ -175,11 +148,16 @@ Exported subs:
 
 =head1 FUNCTIONS
 
-	routes_parse
-	routes_table
-	routes_dbg
 
-Ideally, you shouldn't worry for the module functions. Just make sure to pass the routes_table and use the routes_dbg to see the guts of what happened if something isn't working as expected.
+
+=head2 function1
+
+=cut
+
+=head2 function2
+
+=cut
+
 
 =head1 AUTHOR
 
@@ -205,11 +183,6 @@ You can also look for information at:
 
 =over 4
 
-
-=item * github
-
-L<http://github.com/Porta/cgi--application--plugin--routes/tree/master>
-
 =item * RT: CPAN's request tracker
 
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=CGI-Application-Plugin-Routes>
@@ -231,9 +204,6 @@ L<http://search.cpan.org/dist/CGI-Application-Plugin-Routes>
 
 =head1 ACKNOWLEDGEMENTS
 
-Michael Peter's CGI::Application::Dispatch module that can be found here:
-L<http://search.cpan.org/~wonko/CGI-Application-Dispatch>
-I borrowed from him most of the routine that parses the url.
 
 =head1 COPYRIGHT & LICENSE
 
