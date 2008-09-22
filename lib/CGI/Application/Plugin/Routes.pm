@@ -4,6 +4,7 @@ use base 'Exporter';
 use strict;
 use Data::Dumper;
 use Carp;
+
 use vars qw($VERSION @ISA @EXPORT);
 
 
@@ -11,7 +12,7 @@ our $VERSION = '0.01';
 
 @EXPORT = qw(
 	&routes_parse
-	&routes_table
+	&routes
 	&routes_dbg
 );
 
@@ -22,7 +23,7 @@ sub import {
 	goto &Exporter::import;
 }
 
-sub routes_table {
+sub routes {
 	my ($self, $table) = @_;
 	$self->{'Application::Plugin::Routes::__dispatch_table'} = $table;
 }
@@ -126,7 +127,7 @@ In TestApp.om
 	sub setup {
 		my $self = shift;
 
-		$self->routes_table([
+		$self->routes([
 			'' => 'home' ,
 			'/view/:name/:id/:email'  => 'view',
 		]);
@@ -159,7 +160,7 @@ Exported subs:
 
 	Is exported in order to make the callback available into the CGI::Application based app. Not meant to be invoked manually.
 
-=item * routes_table:
+=item * routes:
 
 	Is exported so it can be called from the CGI::Application app to receive the routes table.
 	If no routes table is provided to the module, it will warn and return 0 and no I<harm> will be done to the CGI query params.
@@ -177,10 +178,10 @@ Exported subs:
 =head1 FUNCTIONS
 
 	routes_parse
-	routes_table
+	routes
 	routes_dbg
 
-Ideally, you shouldn't worry for the module functions. Just make sure to pass the routes_table and use the routes_dbg to see the guts of what happened if something isn't working as expected.
+Ideally, you shouldn't worry for the module functions. Just make sure to pass the routes and use the routes_dbg to see the guts of what happened if something isn't working as expected.
 
 =head1 AUTHOR
 

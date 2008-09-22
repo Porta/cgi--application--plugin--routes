@@ -2,15 +2,16 @@ package TestApp;
 use strict;
 use warnings;
 use base qw/CGI::Application/;
+use lib 'lib';
 use CGI::Application::Plugin::Routes;
 sub setup {
 	my $self = shift;
 
-	$self->routes_table([
+	$self->routes([
  		'' => 'home' ,
  		'/view/:name/:id/:email'  => 'view',
 	]);
-	$self->start_mode('show');
+	$self->start_mode('view');
 
 	$self->run_modes([qw/
 		view
