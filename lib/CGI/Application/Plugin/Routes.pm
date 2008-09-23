@@ -1,24 +1,23 @@
 package CGI::Application::Plugin::Routes;
-use base 'Exporter';
-
 use strict;
-use Data::Dumper;
 use Carp;
 
 use vars qw($VERSION @ISA @EXPORT);
 
-
 our $VERSION = '0.01';
-
-@EXPORT = qw(
-	&routes_parse
-	&routes
-	&routes_dbg
-);
 
 sub import {
     my $pkg     = shift;
     my $callpkg = caller;
+
+    # Do our own exporting. 
+    {
+        no strict qw(refs);
+        *{ $callpkg . '::routes' } = \&CGI::Application::Plugin::Routes::routes;
+        *{ $callpkg . '::routes_parse' } = \&CGI::Application::Plugin::Routes::routes_parse;
+        *{ $callpkg . '::routes_dbg' } = \&CGI::Application::Plugin::Routes::routes_dbg;
+    }
+
     if ( ! UNIVERSAL::isa($callpkg, 'CGI::Application') ) {
         warn "Calling package is not a CGI::Application module so not setting up the prerun hook.  If you are using \@ISA instead of 'use base', make sure it is in a BEGIN { } block, and make sure these statements appear before the plugin is loaded";
     } 
@@ -29,7 +28,6 @@ sub import {
 	    #Add the required callback to the CGI::Application app so it executes the routes_parse sub on the prerun stage
         $callpkg->add_callback( prerun => 'routes_parse' );
     }
-	goto &Exporter::import;
 }
 
 
@@ -40,6 +38,7 @@ sub routes {
 
 sub routes_dbg {
 	my $self = shift;
+    require Data::Dumper;
 	return Dumper($self->{'Application::Plugin::Routes::__r_params'});
 }
 

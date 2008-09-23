@@ -1,5 +1,6 @@
 Revision history for CGI-Application-Plugin-Routes
 
+    - Load Data::Dumper only when needed, not every time (Mark Stosberg)
     - Update 'import' to provide reality checks and better diagnostics (Mark Stosberg)
 
 0.01    Date/time
