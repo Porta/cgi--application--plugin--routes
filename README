@@ -41,7 +41,8 @@ In TestApp.om
 	sub setup {
 		my $self = shift;
 
-		$self->routes_table([
+		$self->routes_root('/someroot'); #optional, will be prepended to any route.
+		$self->routes([
 			'' => 'home' ,
 			'/view/:name/:id/:email'  => 'view',
 		]);
@@ -69,6 +70,8 @@ ACKNOWLEDGEMENTS
 Michael Peter's CGI::Application::Dispatch module that can be found here:
 http://search.cpan.org/~wonko/CGI-Application-Dispatch
 I borrowed from him most of the routine that parses the url.
+
+Mark Stosberg L<http://search.cpan.org/~markstos/>  provided great feedback and fixed parts of the code making it more clean and efficient.
 
 
 SUPPORT AND DOCUMENTATION
