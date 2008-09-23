@@ -94,13 +94,23 @@ sub routes_parse {
 			$self->{'Application::Plugin::Routes::__match'} = $path;
 			my %named_args;
 			$self->param('rm',$table->[++$i]);
-			$self->prerun_mode($table->[$i]);
+
+            my $rm_name = $table->[$i];
+			$self->prerun_mode($rm_name);
+
+            # If the run mode corresponds to a method name and we don't already
+            # a run mode registered by that name, then register one now. 
+            my %rms = $self->run_modes;
+            if (not exists $rms{$rm_name} and $self->can($rm_name)) {
+                $self->run_modes([$rm_name]); 
+            }
+
 			@named_args{@names} = @values if @names;
 			#force params into $self->query. NOTE that it will overwrite any existing param with the same name
 			foreach my $k (keys %named_args){
 				$self->query->param("$k", $named_args{$k});
 			}
-			$self->{'Application::Plugin::Routes::__r_params'} = {"parsed_params: " => \%named_args, "path_received: " => $path, "rule_matched: " => $rule, "runmode: " => $table->[$i]};
+			$self->{'Application::Plugin::Routes::__r_params'} = {"parsed_params: " => \%named_args, "path_received: " => $path, "rule_matched: " => $rule, "runmode: " => $rm_name};
 		}
 	}
 }
@@ -123,7 +133,6 @@ Version 0.01
 CGI::Application::Plugin::Routes tries to bring to perl some of the goodies of Rails routes by allowing the creationg of a routes table that is parsed at the prerun stage again the CGI's path_info data. The result of the process (if there's any match at the end of the process) is added to CGI's query method from CGI::Application and available to all the runmodes via the CGI::Application::query::param method.
 By doing this, the plugin provides a uniform way to access GET and POST parameters when using clean url's with the query->param() method.
 
-
 Perhaps a little code snippet.
 
 In TestApp.om
@@ -142,9 +151,6 @@ In TestApp.om
 		]);
 		$self->start_mode('show');
 
-		$self->run_modes([qw/
-			view
-		/]);
 		$self->tmpl_path('templates/');
 	}
 	sub view {
@@ -158,6 +164,10 @@ In TestApp.om
 	}
 	1;
 
+Not that we did not have to also call run_modes() to register the run modes.
+We will automatically register the route targets as run modes if there is not
+already a run mode registered with that name, and we can call target as a
+method.
 
 =head1 EXPORT
 
