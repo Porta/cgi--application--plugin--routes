@@ -17,11 +17,21 @@ our $VERSION = '0.01';
 );
 
 sub import {
-	#Add the required callback to the CGI::Application app so it executes the routes_parse sub on the prerun stage
-	my $caller = scalar(caller);
-	$caller->add_callback('prerun', 'routes_parse');
+    my $pkg     = shift;
+    my $callpkg = caller;
+    if ( ! UNIVERSAL::isa($callpkg, 'CGI::Application') ) {
+        warn "Calling package is not a CGI::Application module so not setting up the prerun hook.  If you are using \@ISA instead of 'use base', make sure it is in a BEGIN { } block, and make sure these statements appear before the plugin is loaded";
+    } 
+    elsif ( ! UNIVERSAL::can($callpkg, 'add_callback')) {
+        warn "You are using an older version of CGI::Application that does not support callbacks, so the prerun method can not be registered automatically (Lookup the prerun_callback method in the docs for more info)";
+    }
+    else {
+	    #Add the required callback to the CGI::Application app so it executes the routes_parse sub on the prerun stage
+        $callpkg->add_callback( prerun => 'routes_parse' );
+    }
 	goto &Exporter::import;
 }
+
 
 sub routes {
 	my ($self, $table) = @_;
