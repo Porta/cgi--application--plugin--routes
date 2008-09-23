@@ -3,11 +3,12 @@ use strict;
 use warnings;
 use base 'CGI::Application';
 use Test::More;
-use lib './lib';
+use lib '../lib';
 use CGI::Application::Plugin::Routes;
 sub setup {
 	my $self = shift;
 
+	$self->routes_root('someroot');
 	$self->routes([
  		'' => 'home' ,
  		'/view/:name/:id/:email'  => 'view',
@@ -29,7 +30,7 @@ sub view {
     is($id,76,':id has expected value');
 
 	my $email = $q->param('email');
-    is($email, 'mark@stosberg.com', ':email has expected value'); 
+    is($email, 'mark@stosberg.com', ':email has expected value');
 
 	return 'done';
 }

@@ -10,17 +10,18 @@ sub import {
     my $pkg     = shift;
     my $callpkg = caller;
 
-    # Do our own exporting. 
+    # Do our own exporting.
     {
         no strict qw(refs);
         *{ $callpkg . '::routes' } = \&CGI::Application::Plugin::Routes::routes;
         *{ $callpkg . '::routes_parse' } = \&CGI::Application::Plugin::Routes::routes_parse;
         *{ $callpkg . '::routes_dbg' } = \&CGI::Application::Plugin::Routes::routes_dbg;
+        *{ $callpkg . '::routes_root' } = \&CGI::Application::Plugin::Routes::routes_root;
     }
 
     if ( ! UNIVERSAL::isa($callpkg, 'CGI::Application') ) {
         warn "Calling package is not a CGI::Application module so not setting up the prerun hook.  If you are using \@ISA instead of 'use base', make sure it is in a BEGIN { } block, and make sure these statements appear before the plugin is loaded";
-    } 
+    }
     elsif ( ! UNIVERSAL::can($callpkg, 'add_callback')) {
         warn "You are using an older version of CGI::Application that does not support callbacks, so the prerun method can not be registered automatically (Lookup the prerun_callback method in the docs for more info)";
     }
@@ -42,6 +43,13 @@ sub routes_dbg {
 	return Dumper($self->{'Application::Plugin::Routes::__r_params'});
 }
 
+sub routes_root{
+	my ($self, $root) = @_;
+	#make sure no trailing slash is present on the root.
+	$root =~ s/\/$//;
+	$self->{'Application::Plugin::Routes::__routes_root'} = $root;
+}
+
 sub routes_parse {
 	#all this routine, except a few own modifications was borrowed from the wonderful
 	# Michael Peter's CGI::Application::Dispatch module that can be found here:
@@ -56,20 +64,7 @@ sub routes_parse {
 	}
 	# look at each rule and stop when we get a match
 	for(my $i = 0 ; $i < scalar(@$table) ; $i += 2) {
-		my $rule = $table->[$i];
-		# are we trying to dispatch based on HTTP_METHOD?
-		my $http_method_regex = qr/\[([^\]]+)\]$/;
-		if($rule =~ /$http_method_regex/) {
-			my $http_method = $1;
-			# go ahead to the next rule
-			#next unless lc($1) eq lc($self->_http_method);
-			# remove the method portion from the rule
-			$rule =~ s/$http_method_regex//;
-		}
-		# make sure they start with a '/' to match how PATH_INFO is formatted
-		$rule = "/$rule" unless(index($rule, '/') == 0);
-		#so far, we dont need this
-		#$rule = "$rule/" if(substr($rule, -1) ne '/');
+		my $rule = $self->{'Application::Plugin::Routes::__routes_root'} . $table->[$i];
 		my @names = ();
 		# translate the rule into a regular expression, but remember where the named args are
 		# '/:foo' will become '/([^\/]*)'
@@ -99,10 +94,10 @@ sub routes_parse {
 			$self->prerun_mode($rm_name);
 
             # If the run mode corresponds to a method name and we don't already
-            # a run mode registered by that name, then register one now. 
+            # a run mode registered by that name, then register one now.
             my %rms = $self->run_modes;
             if (not exists $rms{$rm_name} and $self->can($rm_name)) {
-                $self->run_modes([$rm_name]); 
+                $self->run_modes([$rm_name]);
             }
 
 			@named_args{@names} = @values if @names;
@@ -145,6 +140,7 @@ In TestApp.om
 	sub setup {
 		my $self = shift;
 
+		$self->routes_root('/thismod');#optional, will be used to prepend every route defines in $self->routes.
 		$self->routes([
 			'' => 'home' ,
 			'/view/:name/:id/:email'  => 'view',
@@ -175,19 +171,22 @@ Exported subs:
 
 =over 1
 
-=item * routes_parse:
-
-	Is exported in order to make the callback available into the CGI::Application based app. Not meant to be invoked manually.
-
-=item * routes:
+=item C<routes>
 
 	Is exported so it can be called from the CGI::Application app to receive the routes table.
 	If no routes table is provided to the module, it will warn and return 0 and no I<harm> will be done to the CGI query params.
 
-=item * routes_dbg:
+=item C<routes_root>
+
+	This method makes possible to set a common root for all the routes passed to the plugin, to avoid unnecessary repetition.
+
+=item C<routes_parse>
+
+	Is exported in order to make the callback available into the CGI::Application based app. Not meant to be invoked manually.
+
+=item C<routes_dbg>
 
 	Is exported so you can see what happened on the Routes guts.
-
 
 =back
 
@@ -196,8 +195,9 @@ Exported subs:
 
 =head1 FUNCTIONS
 
-	routes_parse
 	routes
+	routes_root
+	routes_parse
 	routes_dbg
 
 Ideally, you shouldn't worry for the module functions. Just make sure to pass the routes and use the routes_dbg to see the guts of what happened if something isn't working as expected.
