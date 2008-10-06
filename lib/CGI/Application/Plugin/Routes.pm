@@ -35,8 +35,8 @@ sub routes {
 	my ($self, $table) = @_;
 	$self->{'Application::Plugin::Routes::__dispatch_table'} = $table;
     #register every runmode declared.
-	for(my $i = 0 ; $i < scalar(@$table) ; $i += 2) {
-        my $rm_name = $table->[++$i];
+	for(my $i = 1 ; $i < scalar(@$table) ; $i += 2) {
+        my $rm_name = $table->[$i];
         $self->run_modes([$rm_name]);
 	}
 }
