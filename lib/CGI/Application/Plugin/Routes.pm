@@ -31,10 +31,14 @@ sub import {
     }
 }
 
-
 sub routes {
 	my ($self, $table) = @_;
 	$self->{'Application::Plugin::Routes::__dispatch_table'} = $table;
+    #register every runmode declared.
+	for(my $i = 0 ; $i < scalar(@$table) ; $i += 2) {
+        my $rm_name = $table->[++$i];
+        $self->run_modes([$rm_name]);
+	}
 }
 
 sub routes_dbg {
@@ -92,13 +96,6 @@ sub routes_parse {
 
             my $rm_name = $table->[$i];
 			$self->prerun_mode($rm_name);
-
-            # If the run mode corresponds to a method name and we don't already
-            # a run mode registered by that name, then register one now.
-            my %rms = $self->run_modes;
-            if (not exists $rms{$rm_name} and $self->can($rm_name)) {
-                $self->run_modes([$rm_name]);
-            }
 
 			@named_args{@names} = @values if @names;
 			#force params into $self->query. NOTE that it will overwrite any existing param with the same name
