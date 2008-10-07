@@ -8,7 +8,8 @@ use CGI::Application::Plugin::Routes;
 sub setup {
 	my $self = shift;
 
-	$self->routes_root('someroot');
+	#as example, empty, but can be used to prepend a defined root to each route path
+	$self->routes_root('');
 	$self->routes([
  		'' => 'home' ,
  		'/view/:name/:id/:email'  => 'view',
