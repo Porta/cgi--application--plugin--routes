@@ -122,7 +122,8 @@ Version 0.01
 
 =head1 SYNOPSIS
 
-CGI::Application::Plugin::Routes tries to bring to perl some of the goodies of Rails routes by allowing the creationg of a routes table that is parsed at the prerun stage again the CGI's path_info data. The result of the process (if there's any match at the end of the process) is added to CGI's query method from CGI::Application and available to all the runmodes via the CGI::Application::query::param method.
+CGI::Application::Plugin::Routes tries to bring to perl some of the goodies of Rails routes by allowing the creationg of a routes table that is parsed at the prerun stage again the CGI's path_info data.
+The result of the process (if there's any match at the end of the process) is added to CGI's query method from CGI::Application and available to all the runmodes via the CGI::Application::query::param method.
 By doing this, the plugin provides a uniform way to access GET and POST parameters when using clean url's with the query->param() method.
 
 Perhaps a little code snippet.
@@ -252,6 +253,8 @@ L<http://search.cpan.org/dist/CGI-Application-Plugin-Routes>
 Michael Peter's CGI::Application::Dispatch module that can be found here:
 L<http://search.cpan.org/~wonko/CGI-Application-Dispatch>
 I borrowed from him most of the routine that parses the url.
+
+Mark Stosberg L<http://search.cpan.org/~markstos/> Provided very valuable feedback and some useful patches and changes to the code.
 
 =head1 COPYRIGHT & LICENSE
 
