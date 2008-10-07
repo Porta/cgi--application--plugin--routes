@@ -41,16 +41,13 @@ In TestApp.om
 	sub setup {
 		my $self = shift;
 
-		$self->routes_root('/someroot'); #optional, will be prepended to any route.
+		$self->routes_root('/thismod');#optional, will be used to prepend every route defines in $self->routes.
 		$self->routes([
 			'' => 'home' ,
 			'/view/:name/:id/:email'  => 'view',
 		]);
 		$self->start_mode('show');
 
-		$self->run_modes([qw/
-			view
-		/]);
 		$self->tmpl_path('templates/');
 	}
 	sub view {
@@ -64,14 +61,13 @@ In TestApp.om
 	}
 	1;
 
-
 ACKNOWLEDGEMENTS
 
 Michael Peter's CGI::Application::Dispatch module that can be found here:
 http://search.cpan.org/~wonko/CGI-Application-Dispatch
 I borrowed from him most of the routine that parses the url.
 
-Mark Stosberg L<http://search.cpan.org/~markstos/>  provided great feedback and fixed parts of the code making it more clean and efficient.
+Mark Stosberg http://search.cpan.org/~markstos/  provided great feedback and fixed parts of the code making it more clean and efficient.
 
 
 SUPPORT AND DOCUMENTATION

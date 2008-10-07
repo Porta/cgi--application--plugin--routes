@@ -4,7 +4,7 @@ use Carp;
 
 use vars qw($VERSION @ISA @EXPORT);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub import {
     my $pkg     = shift;
@@ -122,7 +122,7 @@ Version 0.01
 
 =head1 SYNOPSIS
 
-CGI::Application::Plugin::Routes tries to bring to perl some of the goodies of Rails routes by allowing the creationg of a routes table that is parsed at the prerun stage again the CGI's path_info data.
+CGI::Application::Plugin::Routes tries to bring to perl some of the goodies of Rails routes by allowing the creation of a routes table that is parsed at the prerun stage against the CGI's path_info data.
 The result of the process (if there's any match at the end of the process) is added to CGI's query method from CGI::Application and available to all the runmodes via the CGI::Application::query::param method.
 By doing this, the plugin provides a uniform way to access GET and POST parameters when using clean url's with the query->param() method.
 
