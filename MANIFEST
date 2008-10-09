@@ -1,6 +1,7 @@
 #
 Makefile.PL
 README
+Changes
 lib/CGI/Application/Plugin/Routes.pm
 t/00-load.t
 t/basic.t
