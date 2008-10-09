@@ -4,7 +4,7 @@ use Carp;
 
 use vars qw($VERSION @ISA @EXPORT);
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub import {
     my $pkg     = shift;
@@ -116,19 +116,19 @@ CGI::Application::Plugin::Routes - CGI::Application::Plugin::Routes
 
 =head1 VERSION
 
-Version 0.01
+Version 0.03
 
 =cut
 
 =head1 SYNOPSIS
 
-CGI::Application::Plugin::Routes tries to bring to perl some of the goodies of Rails routes by allowing the creation of a routes table that is parsed at the prerun stage against the CGI's path_info data.
-The result of the process (if there's any match at the end of the process) is added to CGI's query method from CGI::Application and available to all the runmodes via the CGI::Application::query::param method.
-By doing this, the plugin provides a uniform way to access GET and POST parameters when using clean url's with the query->param() method.
+CGI::Application::Plugin::Routes tries to bring to Perl some of the goodies of Rails routes by allowing the creation of a routes table that is parsed at the prerun stage against CGI path_info data.
+The result of the process (if there's any match at the end of the process) is added to CGI query method from CGI::Application and available in all the runmodes via the CGI::Application::query::param method.
+By doing this, the plugin provides a uniform way of accessing GET and POST parameters when using clean url's with the query->param() method.
 
-Perhaps a little code snippet.
+Perhaps a little code snippet would help.
 
-In TestApp.om
+In TestApp.pm
 
 	package TestApp;
 	use strict;
@@ -138,7 +138,7 @@ In TestApp.om
 	sub setup {
 		my $self = shift;
 
-		$self->routes_root('/thismod');#optional, will be used to prepend every route defines in $self->routes.
+		$self->routes_root('/thismod');#optional, will be used to prepend every route defined in $self->routes.
 		$self->routes([
 			'' => 'home' ,
 			'/view/:name/:id/:email'  => 'view',
@@ -158,10 +158,8 @@ In TestApp.om
 	}
 	1;
 
-Not that we did not have to also call run_modes() to register the run modes.
-We will automatically register the route targets as run modes if there is not
-already a run mode registered with that name, and we can call target as a
-method.
+Note that we did not have to call run_modes() to register the run modes.
+C::A::P::Routes will automatically register each route as run modes if there is no run mode registered with that name, and your application can call target as a method.
 
 =head1 EXPORT
 
@@ -172,11 +170,11 @@ Exported subs:
 =item C<routes>
 
 	Is exported so it can be called from the CGI::Application app to receive the routes table.
-	If no routes table is provided to the module, it will warn and return 0 and no I<harm> will be done to the CGI query params.
+	If no routes table is provided to the module, it will warn and return 0 and no harm will be done to the CGI query params.
 
 =item C<routes_root>
 
-	This method makes possible to set a common root for all the routes passed to the plugin, to avoid unnecessary repetition.
+	This method makes it possible to set a common root for all the routes passed to the plugin, to avoid unnecessary repetition.
 
 =item C<routes_parse>
 
@@ -202,7 +200,7 @@ Ideally, you shouldn't worry for the module functions. Just make sure to pass th
 
 =head1 AUTHOR
 
-Julián Porta, C<< <julian.porta at gmail.com> >>
+JuliE<aacute>n Porta, C<< <julian.porta at gmail.com> >>
 
 =head1 BUGS
 
@@ -258,7 +256,7 @@ Mark Stosberg L<http://search.cpan.org/~markstos/> Provided very valuable feedba
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008 Julián Porta, all rights reserved.
+Copyright 2008 JuliE<aacute>n Porta, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
