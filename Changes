@@ -1,3 +1,10 @@
+1.00
+    - Documentation updates (Mark Stosberg)
+
+0.03 
+    - Added Changes file, missed on both 0.01 and 0.02
+
+0.02 
+    - Added MANIFEST file missed on 0.01
+
 0.01 Initial Version
-0.02 Added MANIFEST file missed on 0.01
-0.03 Added Changes file, missed on both 0.01 and 0.02

@@ -4,7 +4,7 @@ use Carp;
 
 use vars qw($VERSION @ISA @EXPORT);
 
-our $VERSION = '0.03';
+our $VERSION = '1.00';
 
 sub import {
     my $pkg     = shift;
@@ -112,21 +112,19 @@ __END__
 
 =head1 NAME
 
-CGI::Application::Plugin::Routes - CGI::Application::Plugin::Routes
-
-=head1 VERSION
-
-Version 0.03
-
-=cut
+CGI::Application::Plugin::Routes - Routes-style dispatching for CGI::Application
 
 =head1 SYNOPSIS
 
-CGI::Application::Plugin::Routes tries to bring to Perl some of the goodies of Rails routes by allowing the creation of a routes table that is parsed at the prerun stage against CGI path_info data.
-The result of the process (if there's any match at the end of the process) is added to CGI query method from CGI::Application and available in all the runmodes via the CGI::Application::query::param method.
-By doing this, the plugin provides a uniform way of accessing GET and POST parameters when using clean url's with the query->param() method.
+CGI::Application::Plugin::Routes tries to bring to Perl some of the goodies of
+Rails routes by allowing the creation of a routes table that is parsed at the
+prerun stage against $ENV{PATH_INFO}.  The result of the process (if there's
+any match at the end of the process) is added to CGI query method from
+CGI::Application and available in all the runmodes via 
+C<< $self->query->param >>.  By doing this, the plugin provides a
+uniform way of accessing GET and POST parameters when using clean URIs.
 
-Perhaps a little code snippet would help.
+Example:
 
 In TestApp.pm
 
@@ -138,7 +136,8 @@ In TestApp.pm
 	sub setup {
 		my $self = shift;
 
-		$self->routes_root('/thismod');#optional, will be used to prepend every route defined in $self->routes.
+        # routes_root optionally is used to prepend a URI part to every route
+		$self->routes_root('/thismod'); 
 		$self->routes([
 			'' => 'home' ,
 			'/view/:name/:id/:email'  => 'view',
@@ -148,10 +147,10 @@ In TestApp.pm
 		$self->tmpl_path('templates/');
 	}
 	sub view {
-		my $self = shift;
-		my $q = $self->query();
-		my $name = $q->param('name');
-		my $id = $q->param('id');
+		my $self  = shift;
+		my $q     = $self->query();
+		my $name  = $q->param('name');
+		my $id    = $q->param('id');
 		my $email = $q->param('email');
 		my $debug = $self->routes_dbg; #dumps all the C::A::P::Routes info
 		return $self->dump_html();
@@ -159,44 +158,33 @@ In TestApp.pm
 	1;
 
 Note that we did not have to call run_modes() to register the run modes.
-C::A::P::Routes will automatically register each route as run modes if there is no run mode registered with that name, and your application can call target as a method.
+CGI::Application::Plugin::Routes will automatically register each route as run
+modes if there is no run mode registered with that name, and your application
+can call target as a method.
 
-=head1 EXPORT
+=head1 EXPORTED METHODS
 
-Exported subs:
+=head2 routes
 
-=over 1
+Is exported so it can be called from the CGI::Application app to receive the
+routes table.  If no routes table is provided to the module, it will warn and
+return 0 and no harm will be done to the CGI query params.
 
-=item C<routes>
+=head2 routes_root
 
-	Is exported so it can be called from the CGI::Application app to receive the routes table.
-	If no routes table is provided to the module, it will warn and return 0 and no harm will be done to the CGI query params.
+This method makes it possible to set a common root for all the routes passed to
+the plugin, to avoid unnecessary repetition.
 
-=item C<routes_root>
+=head2 routes_parse
 
-	This method makes it possible to set a common root for all the routes passed to the plugin, to avoid unnecessary repetition.
+Is exported in order to make the callback available into the CGI::Application
+based app. Not meant to be invoked manually.
 
-=item C<routes_parse>
+=head2 routes_dbg
 
-	Is exported in order to make the callback available into the CGI::Application based app. Not meant to be invoked manually.
-
-=item C<routes_dbg>
-
-	Is exported so you can see what happened on the Routes guts.
-
-=back
+Is exported so you can see what happened on the Routes guts.
 
 =cut
-
-
-=head1 FUNCTIONS
-
-	routes
-	routes_root
-	routes_parse
-	routes_dbg
-
-Ideally, you shouldn't worry for the module functions. Just make sure to pass the routes and use the routes_dbg to see the guts of what happened if something isn't working as expected.
 
 =head1 AUTHOR
 
@@ -208,15 +196,11 @@ Please report any bugs or feature requests to C<bug-cgi-application-plugin-route
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=CGI-Application-Plugin-Routes>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
-
-
-
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
     perldoc CGI::Application::Plugin::Routes
-
 
 You can also look for information at:
 
@@ -252,7 +236,8 @@ Michael Peter's CGI::Application::Dispatch module that can be found here:
 L<http://search.cpan.org/~wonko/CGI-Application-Dispatch>
 I borrowed from him most of the routine that parses the url.
 
-Mark Stosberg L<http://search.cpan.org/~markstos/> Provided very valuable feedback and some useful patches and changes to the code.
+Mark Stosberg L<http://search.cpan.org/~markstos/> Provided very valuable
+feedback and some useful patches and changes to the code.
 
 =head1 COPYRIGHT & LICENSE
 
@@ -260,7 +245,6 @@ Copyright 2008 JuliE<aacute>n Porta, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
 
 =cut
 
