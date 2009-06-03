@@ -4,7 +4,7 @@ use Carp;
 
 use vars qw($VERSION @ISA @EXPORT);
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 sub import {
     my $pkg     = shift;
@@ -17,6 +17,8 @@ sub import {
         *{ $callpkg . '::routes_parse' } = \&CGI::Application::Plugin::Routes::routes_parse;
         *{ $callpkg . '::routes_dbg' } = \&CGI::Application::Plugin::Routes::routes_dbg;
         *{ $callpkg . '::routes_root' } = \&CGI::Application::Plugin::Routes::routes_root;
+        *{ $callpkg . '::routes_params' } = \&CGI::Application::Plugin::Routes::routes_params;
+        
     }
 
     if ( ! UNIVERSAL::isa($callpkg, 'CGI::Application') ) {
@@ -52,6 +54,14 @@ sub routes_root{
 	#make sure no trailing slash is present on the root.
 	$root =~ s/\/$//;
 	$self->{'Application::Plugin::Routes::__routes_root'} = $root;
+}
+
+sub routes_params{
+   my ($self) = shift;
+   if ( @_ ){
+       $self->{'Application::Plugin::Routes::__routes_params'} = [ @_ ];
+   }
+   return $self->{'Application::Plugin::Routes::__routes_params'};
 }
 
 sub routes_parse {
@@ -91,6 +101,7 @@ sub routes_parse {
 		# if we found a match, then run with it
 		if(my @values = ($path =~ m#^$rule$#)) {
 			$self->{'Application::Plugin::Routes::__match'} = $path;
+			$self->route_params( @names );
 			my %named_args;
 			$self->param('rm',$table->[++$i]);
 
