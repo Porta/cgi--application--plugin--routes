@@ -1,3 +1,6 @@
+1.02
+    - fixed typo
+
 1.01
     - Added routes_params (https://rt.cpan.org/Public/Bug/Display.html?id=43713)
 

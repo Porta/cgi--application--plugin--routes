@@ -4,7 +4,7 @@ use Carp;
 
 use vars qw($VERSION @ISA @EXPORT);
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 sub import {
     my $pkg     = shift;
@@ -101,7 +101,7 @@ sub routes_parse {
 		# if we found a match, then run with it
 		if(my @values = ($path =~ m#^$rule$#)) {
 			$self->{'Application::Plugin::Routes::__match'} = $path;
-			$self->route_params( @names );
+			$self->routes_params( @names );
 			my %named_args;
 			$self->param('rm',$table->[++$i]);
 
@@ -164,6 +164,7 @@ In TestApp.pm
 		my $id    = $q->param('id');
 		my $email = $q->param('email');
 		my $debug = $self->routes_dbg; #dumps all the C::A::P::Routes info
+		my $params = $self->routes_params; #shows params found.
 		return $self->dump_html();
 	}
 	1;
@@ -190,6 +191,12 @@ the plugin, to avoid unnecessary repetition.
 
 Is exported in order to make the callback available into the CGI::Application
 based app. Not meant to be invoked manually.
+
+=head2 routes_params
+
+This method return a array of all the params found in the query_string
+
+=cut
 
 =head2 routes_dbg
 
