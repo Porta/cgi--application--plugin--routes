@@ -3,8 +3,6 @@ use 5.006;
 use strict;
 use Carp;
 
-use vars qw(@ISA @EXPORT);
-
 our $VERSION = '1.02';
 
 sub import {
