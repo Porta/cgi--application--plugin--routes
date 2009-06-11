@@ -1,8 +1,9 @@
 package CGI::Application::Plugin::Routes;
+use 5.006;
 use strict;
 use Carp;
 
-use vars qw($VERSION @ISA @EXPORT);
+use vars qw(@ISA @EXPORT);
 
 our $VERSION = '1.02';
 
